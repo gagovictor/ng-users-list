@@ -1,5 +1,6 @@
 <div [ngClass]="'user-profile-picture__wrapper user-profile-picture__wrapper--' + size + ' mat-elevation-z2'">
     <img
+        *ngIf="data && data[size]"
         [attr.src]="data[size]" [attr.alt]="desc"
         [attr.aria-label]="desc" [matTooltip]="desc">
 </div>

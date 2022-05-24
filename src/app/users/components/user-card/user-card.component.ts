@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { User } from '../../models/user';
 import { UserFieldsDict } from './../../models/view';
 
@@ -12,17 +12,19 @@ export class UserCardComponent implements OnChanges {
   @Input() user: User;
   @Input() active_fields: string[] = [];
 
-  public filtered_fields: string[];
+  public filtered_fields: string[] = [];
   public field_names: any = UserFieldsDict;
   public full_name: string;
   public full_location: string;
   public user_fields_dict: any = UserFieldsDict;
+  public skip_fields: string[] = ['picture', 'name', 'registered_date', 'registered_age'];
 
   constructor() { }
 
-  ngOnChanges(): void {
-    let skip_fields = ['picture', 'name', 'registered_date', 'registered_age'];
-    this.filtered_fields = this.active_fields.filter((col: string) => !skip_fields.includes(col))
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['active_fields']) {
+      this.filtered_fields = changes['active_fields'].currentValue.filter((col: string) => !this.skip_fields.includes(col));
+    }
   }
 
 }

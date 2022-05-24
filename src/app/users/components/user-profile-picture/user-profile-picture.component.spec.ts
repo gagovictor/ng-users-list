@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { UserProfilePictureComponent } from './user-profile-picture.component';
 
@@ -8,6 +9,7 @@ describe('UserProfilePictureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ MatTooltipModule ],
       declarations: [ UserProfilePictureComponent ]
     })
     .compileComponents();

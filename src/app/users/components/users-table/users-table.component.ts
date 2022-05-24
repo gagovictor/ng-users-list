@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { User } from '../../models/user';
 import { UserFieldsDict, UserFieldsDefault } from '../../models/view';
@@ -18,6 +19,7 @@ export class UsersTableComponent implements OnInit, OnDestroy {
   public column_names: any = UserFieldsDict;
   public loading: boolean = true;
   public active_fields: string[] = [];
+  public data_source: MatTableDataSource<User> = new MatTableDataSource<User>();
   
   private subs_users: Subscription;
   private subs_fields: Subscription;
@@ -31,6 +33,9 @@ export class UsersTableComponent implements OnInit, OnDestroy {
     this.subs_users = this.users_service.usersList().subscribe((data: User[]|null) => {
       this.loading = data === null;
       this.users = data?.length ? data : [];
+      this.sorted_users = this.users;
+      this.data_source.data = this.sorted_users;
+      this.users.splice(5, 2);
       this.sorted_users = this.users;
     });
 
@@ -48,7 +53,7 @@ export class UsersTableComponent implements OnInit, OnDestroy {
     }
   }
   
-  sortData(sort: Sort) {
+  sortData(sort: Sort): void {
     const data = this.users.slice();
     if (!sort.active || sort.direction === '') {
       this.sorted_users = data;
@@ -67,7 +72,7 @@ export class UsersTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  compare(a: number | string, b: number | string, asc: boolean) {
+  compare(a: number | string, b: number | string, asc: boolean): number {
     return (a < b ? -1 : 1) * (asc ? 1 : -1);
   }
 

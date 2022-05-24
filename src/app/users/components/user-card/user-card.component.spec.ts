@@ -1,5 +1,8 @@
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UsersMockResults } from '../../data/users-mock';
 import { User } from '../../models/user';
+import { UserFields } from '../../models/view';
 
 import { UserCardComponent } from './user-card.component';
 
@@ -24,9 +27,18 @@ describe('UserCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`Should receive 'user' as instance of User class.`, () => {
-    const user: User = fixture.componentInstance.user;
-    console.log('user instanceof User',user instanceof User);
-    expect(user instanceof User).toBeTruthy();
+  it(`Should not contain any of 'skip_fields' in 'filtered_fields'.`, () => {
+    component.ngOnChanges({
+      active_fields: new SimpleChange([], UserFields, true)
+    });
+    fixture.detectChanges();
+    let ignores_skip_fields: boolean = true;
+    component.skip_fields.forEach((field: string) => {
+      if(component.filtered_fields.includes(field)) {
+        ignores_skip_fields = false;
+      }
+    })
+    expect(ignores_skip_fields).toBeTrue();
   });
+  
 });

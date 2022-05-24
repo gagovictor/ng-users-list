@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatSlideToggle, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsersDefaultPageIndex } from '../../models/view';
@@ -29,7 +30,8 @@ describe('UsersSearchFormComponent', () => {
         MatInputModule,
         MatExpansionModule,
         MatIconModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatTooltipModule
       ],
       declarations: [
         UsersSearchFormComponent
@@ -103,21 +105,5 @@ describe('UsersSearchFormComponent', () => {
     slider.triggerEventHandler('change', true);
     expect(component.updateView).toHaveBeenCalled();
   });
-
-  it(`Should trigger 'updateFields' when 'inc' formControl is changed`, async(() => {
-    const control: AbstractControl = component.f['inc'];
-    const componentDebug = fixture.debugElement;
-    const select = componentDebug.query(By.css('[formControlName="inc"]'));
-    //const select: MatSelect = fixture.elementRef.nativeElement.querySelector('mat-select[formControlName="inc"]');
-    //select.dispatchEvent(new Event('change'));
-    control.setValue(['test']);
-    select.triggerEventHandler('selectionChange', { value: ['test'] });
-    spyOn(component, 'updateFields');
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      expect(control.value).toEqual(['test']);
-      expect(component.updateFields).toHaveBeenCalled();
-    });
-  }));
 
 });

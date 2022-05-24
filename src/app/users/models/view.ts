@@ -48,4 +48,3 @@ export const UserFieldsDict = {
     'phone': 'Phone',
     'cell': 'Cell'
 };
-

@@ -3,9 +3,10 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { BehaviorSubject, catchError, map, mapTo, Observable, of, tap } from 'rxjs';
 import { serializeObject } from './../../_shared/util/string';
 import { IUserData, User } from '../models/user';
-import { UsersDefaultPageSize, UsersExportFormat } from '../models/view';
+import { UsersDefaultPageSize } from '../models/view';
 import { downloadDataAsFile } from 'src/app/_shared/util/file';
 import { UserFieldsDefault } from './../models/view';
+import { IUserExportParams, IUserListResponse, IUserQueryParams } from '../models/service';
 
 @Injectable({
   providedIn: 'root'
@@ -86,36 +87,8 @@ export class UsersService {
     return this.active_fields.asObservable();
   }
 
-  public setActiveFields(fields: string[]) {
+  public setActiveFields(fields: string[]): void {
     this.active_fields.next(fields);
   }
 
-}
-
-export interface IUserQueryParams {
-  results?: number;
-  page?: number;
-  gender?: string;
-  password?: string;
-  seed?: string;
-  format?: UsersExportFormat;
-  nat?: string;
-  inc?: string[];
-  exc?: string[];
-}
-
-export interface IUserExportParams extends IUserQueryParams {
-  page: number;
-  results: number;
-  format: UsersExportFormat;
-}
-
-export interface IUserListResponse {
-  results: IUserData[];
-  info: {
-    seed: string;
-    results: number;
-    page: number;
-    version: string;
-  }
 }

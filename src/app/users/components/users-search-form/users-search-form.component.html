@@ -13,7 +13,7 @@
                 <mat-form-field>
                     <mat-label>Filter by Gender</mat-label>
                     <mat-select
-                        formControlName="gender" placeholder="Filter by Gender" 
+                        formControlName="gender" placeholder="Filter by Gender" (selectionChange)="submit()"
                         aria-label="Filter by Gender" tabindex="1">
                         <mat-option [value]="null">All</mat-option>
                         <mat-option value="female">Female</mat-option>
@@ -23,7 +23,7 @@
                 <mat-form-field>
                     <mat-label>Filter by Nationality</mat-label>
                     <mat-select
-                        formControlName="nat" multiple placeholder="Filter by nationality"
+                        formControlName="nat" multiple placeholder="Filter by nationality" (selectionChange)="submit()"
                         aria-label="Filter by nationality" tabindex="2">
                         <mat-option [value]="null">All</mat-option>
                         <mat-option *ngFor="let country of countries" [value]="country.code">

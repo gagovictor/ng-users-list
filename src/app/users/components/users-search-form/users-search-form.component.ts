@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MatMenu } from '@angular/material/menu';
 import { UserFieldsDict, UserFields, UsersDefaultPageIndex, UsersDefaultInfiniteScrollOffset } from '../../models/view';
 import { UserFieldsDefault, UsersDefaultPageSize, UsersExportFormat, UsersViewMode } from '../../models/view';
@@ -38,7 +38,7 @@ export class UsersSearchFormComponent implements OnInit {
     this.submit();
   }
 
-  get f() {
+  get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
   }
 
@@ -61,18 +61,18 @@ export class UsersSearchFormComponent implements OnInit {
     return true;
   }
 
-  updateView(mode: UsersViewMode) {
+  updateView(mode: UsersViewMode): void {
     this.view_mode = mode;
     this.changedView.emit(this.view_mode);
   }
 
-  updateFields(fields: string[]) {
+  updateFields(fields: string[]): void {
     fields.sort((a: string, b: string) => UserFields.indexOf(a) < UserFields.indexOf(b) ? -1 : 1);
     this.service.setActiveFields(fields);
     this.submit();
   }
 
-  exportTo(format: UsersExportFormat) {
+  exportTo(format: UsersExportFormat): void {
     this.loading = true;
     this.service.exportUsers({...this.form.value, format: format}).subscribe(() => {
       this.loading = false;
@@ -80,7 +80,7 @@ export class UsersSearchFormComponent implements OnInit {
   }
   
   @HostListener('window:scroll', ['$event'])
-    onWindowScroll() {
+    onWindowScroll(): void {
     let pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
     let max = document.documentElement.scrollHeight;
     if(pos >= max - this.infinite_scroll_offset ) {

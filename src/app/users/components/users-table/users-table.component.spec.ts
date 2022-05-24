@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UsersTableComponent } from './users-table.component';
 import { UsersService } from '../../services/users.service';
@@ -45,5 +45,28 @@ describe('UsersTableComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it(`Should render a number of rows equal to the length of 'sorted_users'`, fakeAsync(() => {
+    var componentDebug = fixture.debugElement;
+    component.users = [];
+    component.active_fields = UserFieldsDefault;
+    UsersMockResults.forEach((result: IUserData) => {
+      component.users.push(new User(result));
+    });
+    component.sorted_users = component.users;
+    component.data_source.data = component.sorted_users;
+    fixture.detectChanges();
+    let rows = componentDebug.queryAll(By.css('tbody .mat-row'));
+    expect(rows.length).toBe(component.sorted_users.length);
+    component.users.splice(5, 2);
+    component.sorted_users = component.users;
+    component.data_source.data = component.sorted_users;
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      componentDebug = fixture.debugElement;
+      rows = componentDebug.queryAll(By.css('tbody .mat-row'));
+      expect(rows.length).toBe(component.sorted_users.length);
+    });
+  }));
 
 });

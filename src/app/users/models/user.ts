@@ -107,7 +107,7 @@ export class User {
         this.cell = props.cell;
     }
 
-    public getAttribute(attr: string) {
+    public getAttribute(attr: string): string | IUserPicture | ((attr: string) => void) | undefined {
         return this[attr as keyof User];
     }
 
