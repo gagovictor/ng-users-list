@@ -1,0 +1,10 @@
+<div fxLayout="column" fxLayoutAlign="start wrap" fxLayoutGap="16px">
+    <user-card
+        *ngFor="let user of users"
+        [user]="user" [active_fields]="active_fields">
+    </user-card>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center">
+    <mat-progress-spinner *ngIf="loading" color="light" mode="indeterminate" diameter="32"></mat-progress-spinner>
+</div>

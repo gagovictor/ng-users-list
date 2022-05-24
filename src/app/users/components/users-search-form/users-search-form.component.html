@@ -1,0 +1,105 @@
+<mat-accordion multi>
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon color="primary">filter_list</mat-icon> Search Parameters
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form
+            [formGroup]="form" (ngSubmit)="submit()"
+            fxLayout="column" fxLayoutAlign="start wrap" fxLayoutGap="16px">
+            <div gdColumns="repeat(2, 1fr)" gdColumns.lt-md="1fr" gdGap="8px 24px">
+                <mat-form-field>
+                    <mat-label>Filter by Gender</mat-label>
+                    <mat-select
+                        formControlName="gender" placeholder="Filter by Gender" 
+                        aria-label="Filter by Gender" tabindex="1">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option value="female">Female</mat-option>
+                        <mat-option value="male">Male</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Filter by Nationality</mat-label>
+                    <mat-select
+                        formControlName="nat" multiple placeholder="Filter by nationality"
+                        aria-label="Filter by nationality" tabindex="2">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let country of countries" [value]="country.code">
+                            {{country.nationality}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Fields</mat-label>
+                    <mat-select
+                        formControlName="inc" multiple placeholder="Displayed fields"
+                        (selectionChange)="updateFields($event.value)"
+                        aria-label="Displayed fields" tabindex="3">
+                        <mat-option *ngFor="let field of user_fields | keyvalue: originalOrder" [value]="field.key">
+                            {{field.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Results per page</mat-label>
+                    <mat-select
+                        formControlName="results" placeholder="Results per page"
+                        aria-label="Results per page" tabindex="4">
+                        <mat-option [value]="10">10</mat-option>
+                        <mat-option [value]="20">20</mat-option>
+                        <mat-option [value]="50">50</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end">
+                <button
+                    id="btn-search"
+                    mat-flat-button color="primary" type="submit"
+                    matTooltip="Submit search"
+                    aria-label="Submit search" tabindex="5"
+                    [disabled]="loading || !form.valid">
+                    <mat-icon>search</mat-icon> Search
+                </button>
+            </div>
+        </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <mat-icon color="primary">grid_on</mat-icon> View Settings
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div fxLayout="column" fxLayoutAlign="start wrap" fxLayoutGap="32px">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+                    <span>Cards View</span>
+                    <mat-slide-toggle
+                        color="primary" [checked]="view_mode == 'table'"
+                        (change)="updateView($event.checked ? 'table' : 'cards')"
+                        [matTooltip]="'Displaying users in '+view_mode+' mode.'"
+                        [attr.aria-label]="'Displaying users in '+view_mode+' mode.'" tabindex="6">
+                    </mat-slide-toggle>
+                    <span>Table View</span>
+                </div>
+                <div>
+                    <button
+                        id="btn-export"
+                        mat-flat-button color="primary" [disabled]="loading"
+                        [matMenuTriggerFor]="export_menu"
+                        matTooltip="Export current results in CSV or XML format."
+                        aria-label="Export current results in CSV or XML format." tabindex="7">
+                        <mat-icon>file_download</mat-icon> Export
+                    </button>
+                    <mat-menu #export_menu>
+                        <button mat-menu-item (click)="exportTo('csv')">CSV</button>
+                        <button mat-menu-item (click)="exportTo('xml')">XML</button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,27 @@
+<mat-card *ngIf="user" class="user-card" fxLayout="column" fxLayoutGap="16px">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <user-profile-picture
+            *ngIf="user.picture"
+            [data]="user.picture" [desc]="user.name" size="thumbnail">
+        </user-profile-picture>
+        <div>
+            <mat-card-title>{{user.name}}</mat-card-title>
+            <mat-card-subtitle *ngIf="user.registered_date">
+                Member since {{user.registered_date}} ({{user.registered_age}})
+            </mat-card-subtitle>
+        </div>
+    </div>
+    <mat-card-content>
+        <mat-divider></mat-divider>
+        <div gdColumns="repeat(2, 1fr)" gdColumns.lt-md="1fr" gdGap="8px 24px">
+            <div 
+                *ngFor="let col of filtered_fields;"
+                fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="1em">
+                <b>{{field_names[col]}}:</b>
+                <span class="text-right">
+                    {{user.getAttribute(col)}}
+                </span>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
