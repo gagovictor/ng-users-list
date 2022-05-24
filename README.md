@@ -12,24 +12,20 @@ User data is fetched from Random User Generator API (https://randomuser.me/).
 
 ## Serving the Application - Angular CLI
 * First, 'cd' to project directory and run
-````
-```
+`
 npm install
 ng serve
-```
-````
+`
 * The application will be served on localhost, port 4200: http://localhost:4200.
 
 
 
 ## Serving the Application - Docker
 * First, 'cd' to project directory and run
-````
-```
+`
 docker build -t users-list .
 docker run -it --rm -p 9000:80 users-list
-```
-````
+`
 * Alternatively, you can run `./build_docker_image.sh` from root folder and get the same result.
 * The application will be served on localhost, port 9000: http://localhost:9000.
 
